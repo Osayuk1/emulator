@@ -1,0 +1,813 @@
+<html><head><base href="." /><title>FlipCoin - The Fun Digital Currency</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive;
+}
+
+body {
+    background: #1a1a2e;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.hero {
+    text-align: center;
+    padding: 2rem 0;
+    position: relative;
+}
+
+.hero h1 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    margin-bottom: 2rem;
+}
+
+.coin {
+    width: min(200px, 50vw);
+    height: min(200px, 50vw);
+    perspective: 1000px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.coin-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+}
+
+.coin.flipping .coin-inner {
+    animation: flip 1s linear;
+}
+
+@keyframes flip {
+    0% { transform: rotateY(0); }
+    100% { transform: rotateY(720deg); }
+}
+
+.coin-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: clamp(1rem, 3vw, 2rem);
+}
+
+.coin-front {
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+}
+
+.coin-back {
+    background: linear-gradient(45deg, #ffa500, #ffd700);
+    transform: rotateY(180deg);
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.stat-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 1rem;
+    text-align: center;
+    border: 2px solid #ffd700;
+    animation: glow 2s infinite alternate;
+}
+
+.stat-box h3 {
+    font-size: clamp(0.7rem, 2vw, 1rem);
+    margin-bottom: 0.5rem;
+}
+
+.stat-box p {
+    font-size: clamp(0.6rem, 1.8vw, 0.9rem);
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 5px #ffd700; }
+    100% { box-shadow: 0 0 20px #ffd700; }
+}
+
+.referral-section {
+    margin-top: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 1rem;
+    text-align: center;
+}
+
+.referral-section h2 {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    margin-bottom: 1rem;
+}
+
+.referral-section p {
+    font-size: clamp(0.7rem, 2vw, 1rem);
+    margin-bottom: 1rem;
+}
+
+.referral-stats {
+    max-width: 300px;
+    margin: 1rem auto;
+}
+
+.referral-link-box {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1rem auto;
+    max-width: 600px;
+}
+
+#referral-link {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 2px solid #ffd700;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-family: monospace;
+}
+
+#copy-link {
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.leaderboard {
+    margin-top: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.leaderboard h2 {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    margin-bottom: 1rem;
+}
+
+.mining-area {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.mining-area p {
+    font-size: clamp(0.7rem, 2vw, 1rem);
+    margin-top: 1rem;
+}
+
+.mine-button {
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    border: none;
+    padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 4vw, 2rem);
+    border-radius: 0.5rem;
+    color: #1a1a2e;
+    font-size: clamp(0.8rem, 2.2vw, 1.2rem);
+    cursor: pointer;
+    transition: transform 0.2s;
+    touch-action: manipulation;
+}
+
+.mine-button:hover {
+    transform: scale(1.05);
+}
+
+.mine-button:active {
+    transform: scale(0.95);
+}
+
+.leaderboard-entry {
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    font-size: clamp(0.6rem, 1.8vw, 0.9rem);
+}
+
+.shop {
+    margin-top: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.shop h2 {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.shop-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.shop-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    border: 1px solid #ffd700;
+    transition: transform 0.2s;
+}
+
+.shop-item:hover {
+    transform: scale(1.02);
+}
+
+.shop-item h3 {
+    font-size: clamp(0.6rem, 1.8vw, 0.9rem);
+    margin-bottom: 0.5rem;
+}
+
+.shop-item p {
+    font-size: clamp(0.5rem, 1.6vw, 0.8rem);
+    margin-bottom: 1rem;
+}
+
+.shop-item button {
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: #1a1a2e;
+    font-size: clamp(0.6rem, 1.8vw, 0.9rem);
+    cursor: pointer;
+}
+
+.countdown {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    border: 2px solid #ffd700;
+}
+
+.countdown h2 {
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    margin-bottom: 0.5rem;
+}
+
+.countdown-timer {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: #ffd700;
+}
+
+#auto-mine-timer {
+    margin-top: 1rem;
+    color: #ffd700;
+    font-size: clamp(0.7rem, 2vw, 1rem);
+}
+
+#auto-mine-countdown {
+    font-weight: bold;
+}
+
+#auto-mine-button {
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    border: none;
+    padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 4vw, 2rem);
+    border-radius: 0.5rem;
+    color: #1a1a2e;
+    font-size: clamp(0.8rem, 2.2vw, 1.2rem);
+    cursor: pointer;
+    transition: transform 0.2s;
+    touch-action: manipulation;
+    margin-left: 1rem;
+}
+
+#auto-mine-button:disabled {
+    background: #666;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0.5rem;
+    }
+    
+    .stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-box {
+        padding: 0.75rem;
+    }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<div class="container">
+    <div class="hero">
+        <h1>FlipCoin</h1>
+        <p>The fun digital currency that keeps on flipping!</p>
+        
+        <div class="coin" id="coin">
+            <div class="coin-inner">
+                <div class="coin-face coin-front">
+                    <svg width="100%" height="100%" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="#ffd700" stroke="#ff8c00" stroke-width="2"/>
+                        <text x="50" y="50" text-anchor="middle" dy=".3em" fill="#1a1a2e" font-size="24">FC</text>
+                    </svg>
+                </div>
+                <div class="coin-face coin-back">
+                    <svg width="100%" height="100%" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="#ffa500" stroke="#ffd700" stroke-width="2"/>
+                        <text x="50" y="50" text-anchor="middle" dy=".3em" fill="#1a1a2e" font-size="24">₣</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-box">
+            <h3>Your Balance</h3>
+            <p id="balance">0 FC</p>
+        </div>
+        <div class="stat-box">
+            <h3>Mining Rate</h3>
+            <p id="mining-rate">0 FC/min</p>
+        </div>
+        <div class="stat-box">
+            <h3>Global Supply</h3>
+            <p id="global-supply">1,000,000 FC</p>
+        </div>
+        <div class="stat-box">
+            <h3>Total Mined</h3>
+            <p id="total-mined">0 FC</p>
+        </div>
+    </div>
+
+    <div class="mining-area">
+        <button class="mine-button" id="mine-button">Mine FlipCoin</button>
+        <p>Click to earn FlipCoins!</p>
+    </div>
+
+    <div class="mining-area">
+        <button class="mine-button" id="auto-mine-button">Start Auto Mining (30min)</button>
+        <p id="auto-mine-timer" style="display: none;">Auto Mining: <span id="auto-mine-countdown">30:00</span></p>
+    </div>
+
+    <div class="referral-section">
+        <h2>Referral Program</h2>
+        <p>Invite friends and earn 1000 FC for each referral!</p>
+        <div class="stat-box referral-stats">
+            <h3>Your Referrals</h3>
+            <p id="referral-count">0 referrals</p>
+        </div>
+        <button class="mine-button" id="generate-referral">Generate Referral Link</button>
+        <div id="referral-link-container" style="display: none;">
+            <p>Your Referral Link:</p>
+            <div class="referral-link-box">
+                <input type="text" id="referral-link" readonly>
+                <button id="copy-link">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="countdown">
+        <h2>Launch Date Countdown</h2>
+        <div class="countdown-timer" id="countdown"></div>
+    </div>
+
+    <div class="shop">
+        <h2>Boost Shop</h2>
+        <div class="shop-items">
+            <div class="shop-item">
+                <h3>Mining Speed Boost</h3>
+                <p>2x mining rate for 1 minute</p>
+                <p>Cost: 50 FC</p>
+                <button onclick="buyBoost('mining', 50, 120000)">Buy Boost</button>
+            </div>
+            <div class="shop-item">
+                <h3>Lucky Multiplier</h3>
+                <p>3x rewards for 30 seconds</p>
+                <p>Cost: 100 FC</p>
+                <button onclick="buyBoost('lucky', 100, 30000)">Buy Boost</button>
+            </div>
+            <div class="shop-item">
+                <h3>Golden Touch</h3>
+                <p>5x rewards for 10 seconds</p>
+                <p>Cost: 200 FC</p>
+                <button onclick="buyBoost('golden', 200, 10000)">Buy Boost</button>
+            </div>
+            <div class="shop-item">
+                <h3>Mining Rate Upgrade</h3>
+                <p>Permanently increase mining rate by +1</p>
+                <p>Current Cost: <span id="mining-rate-cost">100</span> FC</p>
+                <button onclick="buyMiningRateUpgrade()">Buy Upgrade</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let balance = 0;
+let miningRate = 1;
+let autoMiningInterval = null;
+let autoMiningTimeLeft = 1800; // 30 minutes in seconds
+const autoMineButton = document.getElementById('auto-mine-button');
+const autoMineTimer = document.getElementById('auto-mine-timer');
+const autoMineCountdown = document.getElementById('auto-mine-countdown');
+
+async function createTables() {
+    let query = `CREATE TABLE if not exists flipcoin_balances (
+        user_id TEXT PRIMARY KEY,
+        balance INTEGER,
+        auto_mining_end INTEGER,
+        total_mined INTEGER DEFAULT 0,
+        mining_rate INTEGER DEFAULT 1,
+        mining_rate_cost INTEGER DEFAULT 100
+    )`;
+    await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+}
+
+async function createReferralsTable() {
+    let query = `CREATE TABLE if not exists flipcoin_referrals (
+        referrer_id TEXT,
+        referred_id TEXT,
+        created_at INTEGER DEFAULT (strftime('%s', 'now')),
+        PRIMARY KEY (referrer_id, referred_id)
+    )`;
+    await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+}
+
+async function initializeUser() {
+    const user = await window.websim.getUser();
+    if (user) {
+        let query = `INSERT OR IGNORE INTO flipcoin_balances (user_id, balance, auto_mining_end, total_mined) VALUES ('${user.id}', 0, 0, 0)`;
+        await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+    }
+}
+
+async function updateBalance(amount) {
+    const user = await window.websim.getUser();
+    if (user) {
+        let query = `UPDATE flipcoin_balances SET balance = balance + ${amount} WHERE user_id = '${user.id}'`;
+        await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+    }
+}
+
+async function getBalance() {
+    const user = await window.websim.getUser();
+    if (user) {
+        let query = `SELECT balance FROM flipcoin_balances WHERE user_id = '${user.id}'`;
+        let results = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        let data = await results.json();
+        if (data && data.length > 0) {
+            balance = data[0].balance;
+            document.getElementById('balance').textContent = `${balance} FC`;
+        }
+    }
+}
+
+async function updateTotalMined(amount) {
+    const user = await window.websim.getUser();
+    if (user) {
+        let query = `UPDATE flipcoin_balances SET total_mined = total_mined + ${amount} WHERE user_id = '${user.id}'`;
+        await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+    }
+}
+
+async function getTotalMined() {
+    const user = await window.websim.getUser();
+    if (user) {
+        let query = `SELECT total_mined FROM flipcoin_balances WHERE user_id = '${user.id}'`;
+        let results = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        let data = await results.json();
+        if (data && data.length > 0) {
+            document.getElementById('total-mined').textContent = `${data[0].total_mined} FC`;
+        }
+    }
+}
+
+async function getReferralCount() {
+    const user = await window.websim.getUser();
+    if (user) {
+        let query = `SELECT COUNT(*) as count FROM flipcoin_referrals WHERE referrer_id = '${user.id}'`;
+        let results = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        let data = await results.json();
+        if (data && data.length > 0) {
+            document.getElementById('referral-count').textContent = `${data[0].count} referrals`;
+        }
+    }
+}
+
+async function getMiningRate() {
+    const user = await window.websim.getUser();
+    if (user) {
+        let query = `SELECT mining_rate, mining_rate_cost FROM flipcoin_balances WHERE user_id = '${user.id}'`;
+        let results = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        let data = await results.json();
+        if (data && data.length > 0) {
+            miningRate = data[0].mining_rate;
+            document.getElementById('mining-rate').textContent = `${miningRate} FC/min`;
+            document.getElementById('mining-rate-cost').textContent = data[0].mining_rate_cost;
+        }
+    }
+}
+
+async function startAutoMining() {
+    const user = await window.websim.getUser();
+    if (!user) return;
+    
+    // Update auto mining end time in database
+    const endTime = Math.floor(Date.now() / 1000) + 1800; // Current time + 30 minutes
+    let query = `UPDATE flipcoin_balances SET auto_mining_end = ${endTime} WHERE user_id = '${user.id}'`;
+    await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+
+    autoMineButton.disabled = true;
+    autoMineTimer.style.display = 'block';
+    autoMiningTimeLeft = 1800; // Reset to 30 minutes
+    updateAutoMiningTimer();
+
+    // Clear any existing interval
+    if (autoMiningInterval) {
+        clearInterval(autoMiningInterval);
+    }
+
+    // Start auto mining
+    autoMiningInterval = setInterval(async () => {
+        if (autoMiningTimeLeft <= 0) {
+            stopAutoMining();
+            return;
+        }
+
+        // Mine 1 coin per second
+        await updateBalance(1);
+        await updateTotalMined(1);
+        await getBalance();
+        await getTotalMined();
+        
+        autoMiningTimeLeft--;
+        updateAutoMiningTimer();
+    }, 1000);
+}
+
+function stopAutoMining() {
+    if (autoMiningInterval) {
+        clearInterval(autoMiningInterval);
+        autoMiningInterval = null;
+    }
+    autoMineButton.disabled = false;
+    autoMineTimer.style.display = 'none';
+    autoMiningTimeLeft = 1800;
+}
+
+function updateAutoMiningTimer() {
+    const minutes = Math.floor(autoMiningTimeLeft / 60);
+    const seconds = autoMiningTimeLeft % 60;
+    autoMineCountdown.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Add this to the initializeGame function to check for existing auto mining session
+async function checkExistingAutoMining() {
+    const user = await window.websim.getUser();
+    if (user) {
+        let query = `SELECT auto_mining_end FROM flipcoin_balances WHERE user_id = '${user.id}'`;
+        let results = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        let data = await results.json();
+        
+        if (data && data.length > 0 && data[0].auto_mining_end) {
+            const currentTime = Math.floor(Date.now() / 1000);
+            const timeLeft = data[0].auto_mining_end - currentTime;
+            
+            if (timeLeft > 0) {
+                autoMiningTimeLeft = timeLeft;
+                startAutoMining();
+            }
+        }
+    }
+}
+
+document.getElementById('generate-referral').addEventListener('click', async () => {
+    const user = await window.websim.getUser();
+    if (user) {
+        const referralLink = `${window.location.origin}${window.location.pathname}?ref=${user.id}`;
+        document.getElementById('referral-link').value = referralLink;
+        document.getElementById('referral-link-container').style.display = 'block';
+    }
+});
+
+document.getElementById('copy-link').addEventListener('click', () => {
+    const linkInput = document.getElementById('referral-link');
+    linkInput.select();
+    document.execCommand('copy');
+    alert('Referral link copied to clipboard!');
+});
+
+async function checkReferral() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referrerId = urlParams.get('ref');
+    const user = await window.websim.getUser();
+    
+    if (referrerId && user && referrerId !== user.id) {
+        try {
+            let checkQuery = `SELECT * FROM flipcoin_referrals WHERE referrer_id = '${referrerId}' AND referred_id = '${user.id}'`;
+            let checkResults = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: checkQuery}));
+            let existing = await checkResults.json();
+            
+            if (!existing || existing.length === 0) {
+                let addReferralQuery = `INSERT INTO flipcoin_referrals (referrer_id, referred_id) VALUES ('${referrerId}', '${user.id}')`;
+                await fetch('/api/v1/sql/?' + new URLSearchParams({sql: addReferralQuery}));
+                
+                let updateBalanceQuery = `UPDATE flipcoin_balances SET balance = balance + 1000 WHERE user_id = '${referrerId}'`;
+                await fetch('/api/v1/sql/?' + new URLSearchParams({sql: updateBalanceQuery}));
+            }
+        } catch (error) {
+            console.error('Error processing referral:', error);
+        }
+    }
+}
+
+// Add touch events alongside click events
+const coinElement = document.getElementById('coin');
+const mineButton = document.getElementById('mine-button');
+
+function handleCoinAnimation() {
+    coinElement.classList.add('flipping');
+    setTimeout(() => coinElement.classList.remove('flipping'), 1000);
+}
+
+async function handleMining() {
+    const baseAmount = (Math.floor(Math.random() * 10) + 1) * miningRate;
+    const boostedAmount = Math.floor(baseAmount * activeBoosts.mining * activeBoosts.lucky * activeBoosts.golden);
+    await updateBalance(boostedAmount);
+    await updateTotalMined(boostedAmount);
+    await getBalance();
+    await getTotalMined();
+}
+
+// Mouse events
+coinElement.addEventListener('click', handleCoinAnimation);
+mineButton.addEventListener('click', handleMining);
+
+// Touch events
+coinElement.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    handleCoinAnimation();
+}, { passive: false });
+
+mineButton.addEventListener('touchstart', async (e) => {
+    e.preventDefault();
+    await handleMining();
+}, { passive: false });
+
+let activeBoosts = {
+    mining: 1,
+    lucky: 1,
+    golden: 1
+};
+
+async function buyBoost(type, cost, duration) {
+    if (balance >= cost) {
+        await updateBalance(-cost);
+        await getBalance();
+        
+        let multiplier = type === 'mining' ? 2 : type === 'lucky' ? 3 : 5;
+        activeBoosts[type] = multiplier;
+        
+        const buttons = document.querySelectorAll('.shop-item button');
+        buttons.forEach(button => {
+            if (button.onclick.toString().includes(type)) {
+                button.disabled = true;
+            }
+        });
+        
+        setTimeout(async () => {
+            activeBoosts[type] = 1;
+            buttons.forEach(button => {
+                if (button.onclick.toString().includes(type)) {
+                    button.disabled = false;
+                }
+            });
+        }, duration);
+    }
+}
+
+async function buyMiningRateUpgrade() {
+    const user = await window.websim.getUser();
+    if (user) {
+        // First get current cost
+        let query = `SELECT balance, mining_rate_cost FROM flipcoin_balances WHERE user_id = '${user.id}'`;
+        let results = await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+        let data = await results.json();
+        
+        if (data && data.length > 0) {
+            const currentCost = data[0].mining_rate_cost;
+            const currentBalance = data[0].balance;
+            
+            if (currentBalance >= currentCost) {
+                // Update balance, mining rate, and next cost
+                const newCost = Math.floor(currentCost * 1.5); // Increase cost by 50% each time
+                query = `UPDATE flipcoin_balances 
+                        SET balance = balance - ${currentCost},
+                            mining_rate = mining_rate + 1,
+                            mining_rate_cost = ${newCost}
+                        WHERE user_id = '${user.id}'`;
+                await fetch('/api/v1/sql/?' + new URLSearchParams({sql: query}));
+                
+                // Update UI
+                await getBalance();
+                await getMiningRate();
+            } else {
+                alert('Not enough FlipCoins!');
+            }
+        }
+    }
+}
+
+// Countdown timer
+function updateCountdown() {
+    const now = new Date();
+    const launch = new Date('January 1, 2025 00:00:00'); // Changed from 2024 to 2025
+    const diff = launch - now;
+    
+    if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        document.getElementById('countdown').textContent = 
+            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    } else {
+        document.getElementById('countdown').textContent = 'FlipCoin is LIVE!';
+    }
+}
+
+// Initialize countdown
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Initialize the game
+async function initializeGame() {
+    await createTables();
+    await createReferralsTable();
+    await initializeUser();
+    await checkReferral();
+    await getMiningRate();
+    await checkExistingAutoMining(); // Add this line
+    
+    // Set up polling for live updates
+    setInterval(async () => {
+        await getBalance();
+        await getTotalMined();
+        await getReferralCount();
+        await getMiningRate();
+    }, 1000);
+}
+
+// Start the game initialization
+initializeGame().catch(console.error);
+
+// Add event listeners for the auto-mine button
+autoMineButton.addEventListener('click', startAutoMining);
+autoMineButton.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    startAutoMining();
+}, { passive: false });
+
+// Add cleanup when the page is unloaded
+window.addEventListener('beforeunload', () => {
+    if (autoMiningInterval) {
+        stopAutoMining();
+    }
+});
+</script>
+</body></html>
